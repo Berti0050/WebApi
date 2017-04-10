@@ -21,10 +21,15 @@ namespace WebApi.Controllers
                 respuesta.data = Convert.ToDateTime(value).ToUniversalTime().ToString();
                 respuesta.code = 200;
                 respuesta.description = "OK";
+                var jsonRespuesta = new JavaScriptSerializer().Serialize(respuesta);
+
+                return jsonRespuesta;
             }
             catch (Exception e)
             {
                 respuesta = new dataRes();
+                
+                //check if the exception is "Can´t convert the format to DateTime
                 if (e.HResult== -2146233033)
                 {
                     respuesta.code = 400;
@@ -39,9 +44,7 @@ namespace WebApi.Controllers
                 var jsonRespuestaex = new JavaScriptSerializer().Serialize(respuesta);
                 return jsonRespuestaex;
             }
-             var jsonRespuesta = new JavaScriptSerializer().Serialize(respuesta);
 
-            return jsonRespuesta;
         }
 
     }

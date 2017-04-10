@@ -13,12 +13,14 @@ namespace WebApi.Controllers
 {
     public class wordController : ApiController
     {
-        // POST: api/word
+        // POST: /word
         public string Post([FromBody]dataIn data)
         {
             dataRes respuesta;
             try{
                 respuesta = new dataRes();
+
+                //Check if the lenght for the word is diferent to 4
                 if (data.data.Length == 4)
                 {
                     respuesta.data = data.data.ToUpper();
@@ -30,21 +32,24 @@ namespace WebApi.Controllers
                     respuesta.code = 400;
                     respuesta.description = "Bad Request";
                 }
-            }catch(Exception e)
+
+                var jsonRespuesta = new JavaScriptSerializer().Serialize(respuesta);
+
+                return jsonRespuesta;
+            }
+            catch(Exception e)
             {
                 respuesta = new dataRes();
                 respuesta.data = e.Message;
                 respuesta.code = 500;
                 respuesta.description = "Internal Server Error";
 
+                //Convert the String to JSON
                 var jsonRespuestaE = new JavaScriptSerializer().Serialize(respuesta);
 
                 return jsonRespuestaE;
             }
             
-            var jsonRespuesta = new JavaScriptSerializer().Serialize(respuesta);
-
-            return jsonRespuesta;
         }
     }
 }
